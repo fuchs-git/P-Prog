@@ -7,7 +7,7 @@ from time import sleep
 from random import randint
 
 
-def job(name: int):
+def job(name):
     global schiessbahn_frei
     while True:
         sleep(randint(1, 10) / 10)
