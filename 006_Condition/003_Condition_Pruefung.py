@@ -19,7 +19,7 @@ def job(name):
     #  kritischer Bereich
     liste_danach.append(name)
     if name == 0:
-        sleep(5)
+        sleep(3)
 
     # freigabe der Ressource
     with condition:
