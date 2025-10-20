@@ -18,7 +18,7 @@ class Parkhaus:
         self.condition = Condition()
 
     def einfahren(self, auto: int):
-        # print(f'Das Parkhaus hat {self.anzahl_freie_plaetze} freie Plätze'.center(50,'-'))
+        print(f'\r[+] Das Parkhaus hat {self.anzahl_freie_plaetze} freie Plätze',end='', flush=True)
 
         with self.condition:
             self.wartende_autos.append(auto)
@@ -38,17 +38,17 @@ def auto(nummer):
     while True:
         sleep(randint(1,10)/10)
 
-        print(f'Auto {nummer} will parken\n', end='')
+        # print(f'Auto {nummer} will parken\n', end='')
         augsburg_allee.einfahren(nummer)
-        print(f'Auto {nummer} parkt\n', end='')
+        # print(f'Auto {nummer} parkt\n', end='')
         sleep(randint(1,10)/10)
-        print(f'Auto {nummer} fährt raus\n', end='')
+        # print(f'Auto {nummer} fährt raus\n', end='')
         augsburg_allee.ausfahren()
 
 
 
 
-augsburg_allee = Parkhaus(10)
+augsburg_allee = Parkhaus(70)
 
 besucher = []
 for i in range(100):
