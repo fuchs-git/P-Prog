@@ -29,6 +29,12 @@ class WC:
         #     return self.tueren[1]
         # return self.tueren[0]
 
+    # def betreten(self, schueler: 'Schueler'):
+    #     pass
+    #
+    # def verlassen(self, schueler: 'Schueler'):
+    #     pass
+
 
 class Schueler:
     def __init__(self, name: str, tuer: Tuer, wc: WC):
@@ -51,19 +57,13 @@ def job(schueler: Schueler):
         print(schueler.name + ' lernt')
         sleep(randint(1,10)/10)
 
-        # schueler.wc.gib_andere_Tuer(schueler.tuer).offen = False
-        # schueler.tuer.offen = False
-
-        # Dekker
+        # Peterson - kritischer Bereich
         print(schueler.name + ' möchte das WC nutzen')
         andere_tuer = schueler.wc.gib_andere_Tuer(schueler.tuer)
         andere_tuer.offen = False
-        while not schueler.tuer.offen:
-            if wc.schild.schueler is schueler:
-                andere_tuer = True
-                while wc.schild.schueler is schueler:
-                    pass
-                andere_tuer.offen = False
+        schueler.wc.schild.schueler = schueler
+        while not schueler.tuer.offen and schueler.wc.schild.schueler is not schueler:
+            pass
 
 
 
@@ -72,10 +72,7 @@ def job(schueler: Schueler):
         print(schueler.name + ' nutzt das WC.')
 
 
-
-        wc.schild.schueler = schueler
-        schueler.wc.gib_andere_Tuer(schueler.tuer).offen = True
-        schueler.tuer.offen = True
+        andere_tuer.offen = True
         print(schueler.name + ' verlässt das WC.')
 
 Thread(target=job, args=(schueler1,)).start()
