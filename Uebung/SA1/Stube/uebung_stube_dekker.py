@@ -60,7 +60,7 @@ def job(schueler: Schueler):
         andere_tuer.offen = False
         while not schueler.tuer.offen:
             if wc.schild.schueler is schueler:
-                andere_tuer = True
+                andere_tuer.offen = True
                 while wc.schild.schueler is schueler:
                     pass
                 andere_tuer.offen = False
