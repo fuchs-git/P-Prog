@@ -8,7 +8,6 @@ from time import sleep
 
 class Plattform:
     def __init__(self):
-        self.frei = True          # rein symbolisch
         self.log = "Drohne A"     # = turn (wer hat Vorrang)
         self.flag_a = False       # Drohne A will laden
         self.flag_b = False       # Drohne B will laden
@@ -26,7 +25,7 @@ def job(drohne: Drohne):
         print(f'{drohne.name} fliegt umher.\n', end='')
         sleep(randint(1, 10) / 10)
 
-        print(f'{drohne.name} braucht Energie')
+        print(f'{drohne.name} braucht Energie...\n', end='')
 
         # ------------------- Dekker-Algorithmus -------------------
         if drohne.name == "Drohne A":
@@ -61,10 +60,8 @@ def job(drohne: Drohne):
 
 
 def ladevorgang(drohne: Drohne):
-    drohne.plattform.frei = False
     print(f'{drohne.name} ist am Laden ⚡\n', end='')
     sleep(randint(1, 10) / 10)
-    drohne.plattform.frei = True
 
 
 # --- Start ---
