@@ -1,15 +1,16 @@
 """
 Drohnenstation mit Peterson
 """
-
 from random import randint
 from threading import Thread
 from time import sleep
 
+
 class Plattform():
     def __init__(self):
-        self.interested = [False, False]    # 0=DrohneA, 1=DrohneB
-        self.turn = 0                       # Wer hat den Vorrang, wenn beide landen wollen
+        self.interested = [False, False]  # 0=DrohneA, 1=DrohneB
+        self.turn = 0  # Wer hat den Vorrang, wenn beide landen wollen
+
 
 class Drohne:
     def __init__(self, name, plattform: Plattform, nummer: int):
@@ -25,11 +26,12 @@ class Drohne:
             pass
 
     def leave_region(self):
-        self.plattform.interested[self.nummer] =False
+        self.plattform.interested[self.nummer] = False
 
-    def ladevorgang(self):                    # Kritischer Bereich
+    def ladevorgang(self):  # Kritischer Bereich
         print(f'{self.name} ist am Laden ⚡\n', end='')
         sleep(randint(1, 10) / 10)
+
 
 def job(d: Drohne):
     while True:
@@ -43,6 +45,7 @@ def job(d: Drohne):
 
         print(f'{d.name} verlässt die Plattform\n', end='')
         sleep(randint(1, 5) / 10)
+
 
 plattform = Plattform()
 d1 = Drohne("Drohne A", plattform, 0)
