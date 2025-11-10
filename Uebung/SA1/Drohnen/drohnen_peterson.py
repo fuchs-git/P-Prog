@@ -17,19 +17,19 @@ class Drohne:
         self.plattform = plattform
         self.nummer = nummer
 
-def enter_region(d: Drohne):
-    other = 1 - d.nummer
-    d.plattform.interested[d.nummer] = True
-    d.plattform.turn = other
-    while d.plattform.interested[other] and d.plattform.turn == other:
-        pass
+    def enter_region(self):
+        other = 1 - self.nummer
+        self.plattform.interested[self.nummer] = True
+        self.plattform.turn = other
+        while self.plattform.interested[other] and self.plattform.turn == other:
+            pass
 
-def leave_region(d: Drohne):
-    d.plattform.interested[d.nummer] =False
+    def leave_region(self):
+        self.plattform.interested[self.nummer] =False
 
-def ladevorgang(drohne: Drohne):                    # Kritischer Bereich
-    print(f'{drohne.name} ist am Laden ⚡\n', end='')
-    sleep(randint(1, 10) / 10)
+    def ladevorgang(self):                    # Kritischer Bereich
+        print(f'{self.name} ist am Laden ⚡\n', end='')
+        sleep(randint(1, 10) / 10)
 
 def job(d: Drohne):
     while True:
@@ -37,9 +37,9 @@ def job(d: Drohne):
         sleep(randint(1, 10) / 10)
 
         print(f'{d.name} braucht Energie...\n', end='')
-        enter_region(d)
-        ladevorgang(d)
-        leave_region(d)
+        d.enter_region()
+        d.ladevorgang()
+        d.leave_region()
 
         print(f'{d.name} verlässt die Plattform\n', end='')
         sleep(randint(1, 5) / 10)
