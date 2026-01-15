@@ -50,6 +50,7 @@ class MandelbrotApp(tk.Tk):
 
         startzeit = time()
 
+        # ---------- Multithreading ----------
         anzahl_threads = 2
         threads = []
         for i in range(anzahl_threads):
