@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
 # C extensions
 *.so
 
@@ -100,6 +101,8 @@ ENV/
 [Ss]cripts
 pyvenv.cfg
 .venv
+.venv2
+.idea/misc.xml
 pip-selfcheck.json
 
 ### JetBrains template
