@@ -1,7 +1,7 @@
 import typing
 from typing import Any, Union
 import time, random
-from threading import Thread
+from threading import Thread, Lock
 
 
 class Liste:
@@ -231,6 +231,70 @@ class Liste:
             schaffner = schaffner.next
         return
 
+    def merge_sort(self):
+        def auftrag():
+            while True:
+                queue_zugriff.acquire()
+                if  len(teillisten) > 1:
+                    links = teillisten.pop(0)
+                    rechts = teillisten.pop(0)
+                    queue_zugriff.release()
+
+                    # merge
+                    ret = None  # Anfang der zurückzugebenden Wagonkette
+                    if links.value < rechts.value:
+                        ret = links
+                        links = links.next
+                    else:
+                        ret = rechts
+                        rechts = rechts.next
+                    temp = ret
+
+                    while links is not None and rechts is not None:
+                        if links.value < rechts.value:
+                            temp.next = links
+                            links = links.next
+                        else:
+                            temp.next = rechts
+                            rechts = rechts.next
+                        temp = temp.next
+                    if rechts is None:
+                        temp.next = links
+                    else:
+                        temp.next = rechts
+
+                    queue_zugriff.acquire()
+                    teillisten.append(ret)
+                    queue_zugriff.release()
+                else:
+                    queue_zugriff.release()
+                    break
+
+
+
+
+
+        teillisten = []
+        temp = self._first
+        while temp is not None:
+            next = temp.next
+            teillisten.append(temp)
+            temp.next = None
+            temp = next
+
+
+        queue_zugriff = Lock()
+
+        threads = []
+        for _ in range(6):
+            threads.append(Thread(target=auftrag))
+
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
+        self._first = teillisten[0]
 
 if __name__ == '__main__':  # lokaler test
 
@@ -238,25 +302,25 @@ if __name__ == '__main__':  # lokaler test
         print(f"\n{n:_} random Elemente werden sortiert")
 
         liste_python = [random.randint(0,n) for _ in range(n)]
-        liste_linked_quick = Liste(liste_python)
+        liste_merge_sort = Liste(liste_python)
 
         start = time.time()
         liste_python.sort()
         print(f"PowerSort auf Python-Liste: {time.time()-start:10.7f}sec",)
 
         start = time.time()
-        liste_linked_quick.sort_quick()
-        print(f"QuickSort auf Linked-Liste: {time.time()-start:10.7f}sec",)
+        liste_merge_sort.merge_sort()
+        print(f"MergeSort auf Linked-Liste: {time.time()-start:10.7f}sec",)
 
 
-        assert str(liste_linked_quick) == str(liste_python)
+        assert str(liste_merge_sort) == str(liste_python)
 
 
     for n in (100,995 ): # 995, 1000, 100_000
         print(f"\n{n:_} vorsortierte Elemente werden sortiert")
 
         liste_python = [x for x in range(n)]
-        liste_linked_quick = Liste(liste_python)
+        liste_merge_sort = Liste(liste_python)
 
         start = time.time()
         liste_python.sort()
@@ -264,12 +328,12 @@ if __name__ == '__main__':  # lokaler test
 
         start = time.time()
         try:
-            liste_linked_quick.sort_quick()
+            liste_merge_sort.merge_sort()
         except RecursionError:
-            print(f"QuickSort auf Linked-Liste:  Error",)
+            print(f"MergeSort auf Linked-Liste:  Error",)
         else:
-            print(f"QuickSort auf Linked-Liste: {time.time()-start:10.7f}sec",)
+            print(f"MergeSort auf Linked-Liste: {time.time()-start:10.7f}sec",)
 
 
-        assert str(liste_linked_quick) == str(liste_python)
+        assert str(liste_merge_sort) == str(liste_python)
 
